@@ -1,0 +1,30 @@
+.item-container {
+  display: grid;
+  grid-template-columns: 30px auto 20px;
+  padding: 10px;
+  align-items: center;
+  border-bottom: 1px solid gray;
+  cursor: pointer;
+  &:hover {
+    background-color: rgb(255, 223, 182);
+  }
+
+  .icon-container {
+    margin-right: 10px !important;
+    display: flex;
+    align-items: center;
+  }
+
+  .completed {
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  .del-container {
+    color: brown;
+
+    &:hover {
+      color: red;
+    }
+  }
+}

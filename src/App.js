@@ -1,23 +1,66 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import "./App.css";
 
-function App() {
+import Header from "./components/header/header.component";
+import ItemsList from "./components/items-list/items-list.component";
+import CustomInput from "./components/custom-input/custom-input.component";
+
+import { db, createTask } from "./firebase/firebase.utils";
+
+function App(props) {
+  const [tasks, setTasks] = useState([]);
+  const [newTask, setNewTask] = useState({
+    title: "",
+    completed: null,
+  });
+
+  useEffect(() => {
+    db.collection("todos").onSnapshot((snapShot) => {
+      setTasks(
+        snapShot.docs.map((doc) => {
+          return { _id: doc.id, ...doc.data() };
+        })
+      );
+    });
+  }, []);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    // newTask.title && setTasks([...tasks, newTask]);
+    newTask.title &&
+      (await createTask({
+        title: newTask.title,
+      }));
+    setNewTask({
+      title: "",
+      completed: null,
+    });
+  };
+
+  const handleChange = (e) => {
+    setNewTask({
+      title: e.target.value,
+      completed: false,
+    });
+  };
+
+  const completeTask = (e) => {
+    console.log(e.target);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+      <Header />
+      <form onSubmit={handleSubmit}>
+        <CustomInput
+          name="add-note"
+          placeholder="Create task"
+          onChange={handleChange}
+          value={newTask.title}
+          type="text"
+        />
+      </form>
+      <ItemsList tasks={tasks} completeTask={completeTask} />
     </div>
   );
 }

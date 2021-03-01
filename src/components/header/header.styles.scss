@@ -1,0 +1,13 @@
+.header-container {
+  margin: 0 auto;
+  margin-bottom: 10px;
+  display: flex;
+  width: 500px;
+  justify-content: center;
+
+  .title {
+    text-align: center;
+    font-size: 80px;
+    color: brown;
+  }
+}
