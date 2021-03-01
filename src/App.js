@@ -6,19 +6,15 @@ import ItemsList from "./components/items-list/items-list.component";
 import CustomInput from "./components/custom-input/custom-input.component";
 
 import { db, createTask } from "./firebase/firebase.utils";
-import firebase from "firebase";
+import firebase from "firebase/app";
 
 function App(props) {
   const [tasks, setTasks] = useState([]);
-  const [newTask, setNewTask] = useState({
-    title: "",
-    completed: null,
-    timestamp: null,
-  });
+  const [newTask, setNewTask] = useState("");
 
   useEffect(() => {
     db.collection("todos")
-      .orderBy("timestamp", "desc")
+      .orderBy("createTime", "desc")
       .onSnapshot((snapShot) => {
         setTasks(
           snapShot.docs.map((doc) => {
@@ -31,27 +27,16 @@ function App(props) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     // newTask.title && setTasks([...tasks, newTask]);
-    newTask.title &&
+    newTask &&
       (await createTask({
-        title: newTask.title,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        title: newTask,
+        createTime: firebase.firestore.Timestamp.fromDate(new Date()),
       }));
-    setNewTask({
-      title: "",
-      completed: null,
-      timestamp: null,
-    });
+    setNewTask("");
   };
 
   const handleChange = (e) => {
-    setNewTask({
-      title: e.target.value,
-      completed: false,
-    });
-  };
-
-  const completeTask = (e) => {
-    console.log(e.target);
+    setNewTask(e.target.value);
   };
 
   return (
@@ -62,11 +47,11 @@ function App(props) {
           name="add-note"
           placeholder="Create task"
           onChange={handleChange}
-          value={newTask.title}
+          value={newTask}
           type="text"
         />
       </form>
-      <ItemsList tasks={tasks} completeTask={completeTask} />
+      <ItemsList tasks={tasks} />
     </div>
   );
 }

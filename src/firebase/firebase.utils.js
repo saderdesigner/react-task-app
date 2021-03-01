@@ -11,10 +11,11 @@ const config = {
   appId: "1:338240483157:web:e5058c8e10bb4d7d90c9dc",
 };
 
-const createTask = async ({ title }) => {
+const createTask = async ({ title, createTime }) => {
   const newTask = {
     title: title,
     completed: false,
+    createTime: createTime,
   };
   const taskRef = db.collection("todos");
   console.log(taskRef);
