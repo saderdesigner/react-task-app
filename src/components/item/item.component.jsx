@@ -2,32 +2,20 @@ import React from "react";
 import RadioButtonUncheckedIcon from "@material-ui/icons/RadioButtonUnchecked";
 import RadioButtonCheckedIcon from "@material-ui/icons/RadioButtonChecked";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
-import { db } from "../../firebase/firebase.utils";
+import { deleteTask, completeTask } from "../../firebase/firebase.utils";
 
 import "./item.styles.scss";
 
-const Item = ({ title, completed, _id }) => {
-  const deleteTask = async () => {
-    try {
-      await db.collection("todos").doc(_id).delete();
-    } catch (error) {
-      console.log(error.message);
-    }
+const Item = ({ title, completed, taskId, uid }) => {
+  const deleteTaskHandle = async () => {
+    await deleteTask(uid, taskId);
   };
 
-  const completeTask = () => {
-    const taskRef = db.collection("todos").doc(_id);
-    console.log(taskRef);
-    try {
-      taskRef.update({
-        completed: !completed,
-      });
-    } catch (error) {
-      console.log(error.message);
-    }
+  const completeTaskHandle = async () => {
+    await completeTask(uid, taskId, completed);
   };
   return (
-    <div className="item-container" onClick={completeTask}>
+    <div className="item-container">
       <div className="icon-container">
         {completed ? (
           <RadioButtonCheckedIcon className="completed" />
@@ -36,9 +24,14 @@ const Item = ({ title, completed, _id }) => {
         )}
       </div>
 
-      <div className={`title ${completed ? "completed" : ""}`}>{title}</div>
+      <div
+        className={`title ${completed ? "completed" : ""}`}
+        onClick={completeTaskHandle}
+      >
+        {title}
+      </div>
       <div className="del-container">
-        <DeleteForeverIcon onClick={deleteTask} />
+        <DeleteForeverIcon onClick={deleteTaskHandle} />
       </div>
     </div>
   );

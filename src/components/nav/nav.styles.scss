@@ -1,0 +1,26 @@
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .user {
+    margin-right: 10px;
+    font-weight: 500;
+  }
+
+  button {
+    height: 30px;
+    width: 80px;
+    background-color: transparent;
+    border-radius: 5px;
+    border: 1px solid brown;
+    color: brown;
+    cursor: pointer;
+
+    &:hover {
+      border: none;
+      color: white;
+      background-color: brown;
+    }
+  }
+}
