@@ -16,7 +16,7 @@ const Item = ({ title, completed, taskId, uid }) => {
   };
   return (
     <div className="item-container">
-      <div className="icon-container">
+      <div className="icon-container" onClick={completeTaskHandle}>
         {completed ? (
           <RadioButtonCheckedIcon className="completed" />
         ) : (
@@ -24,12 +24,7 @@ const Item = ({ title, completed, taskId, uid }) => {
         )}
       </div>
 
-      <div
-        className={`title ${completed ? "completed" : ""}`}
-        onClick={completeTaskHandle}
-      >
-        {title}
-      </div>
+      <div className={`title ${completed ? "completed" : ""}`}>{title}</div>
       <div className="del-container">
         <DeleteForeverIcon onClick={deleteTaskHandle} />
       </div>

@@ -4,9 +4,15 @@
   padding: 10px;
   align-items: center;
   border-bottom: 1px solid gray;
+  word-wrap: break-word !important;
   cursor: pointer;
   &:hover {
     background-color: rgb(255, 223, 182);
+  }
+
+  .title {
+    word-wrap: break-word !important;
+    word-break: break-all;
   }
 
   .icon-container {
